@@ -28,6 +28,7 @@ const int& z = x;
 ParamType 형태에 따라 형식 연역되는 경우를 숙지하자.
 
 #### Param type이 포인터 혹은 참조. 하지만 Universal reference (보편 참조)는 아님
+
 | ParamType| 호출 형식 | 형식 연역 |
 |----------|---------|---------|
 |void f(T& param)| f(x) | T : int, param : int& |
@@ -45,15 +46,18 @@ ParamType 형태에 따라 형식 연역되는 경우를 숙지하자.
 
 
 포인터일 경우도 알아보자.
+
 | ParamType| 호출 형식 | 형식 연역 |
 |----------|---------|---------|
 |void f(T* param)| f(&x) | T : int, param : int* |
 |void f(T* param)| const int* pX = &x; f(pX) | T : const int, param : const int* |
+
 책에선 여기까지는 너무 쉬워서 하품이 난다지만 나는 아닌걸...
 
 
 #### Param type이 universal reference (보편 참조)
 이 경우 expr이 왼 값일 때(lvalue) 왼 값으로 연역된다.
+
 | ParamType| 호출 형식 | 형식 연역 |
 |----------|---------|---------|
 |void f(T&& param)| f(x) | T : int, param : const int& |
