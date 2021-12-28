@@ -1,5 +1,5 @@
 ---
-title: "Type deduction"
+title: "Type deduction 1 : 타입 추론 규칙"
 #excerpt_separator: "<!--more-->"
 categories:
   - C++
