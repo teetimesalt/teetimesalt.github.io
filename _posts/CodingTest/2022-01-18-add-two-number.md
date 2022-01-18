@@ -26,15 +26,15 @@ Explanation: 342 + 465 = 807.
 
 처음 ListNode 를 지역 변수로 선언하고 이 지역 변수의 next 가 가지고 있는 ListNode 를 돌려주면 코드가 훨씬 깔끔해질 수 있다.
 
-₩₩₩
+```
 ListNode r{0};
 ListNode *c = &r;
-₩₩₩
+```
 
 이 후 두 링크드 리스트가 nullptr 이 될때까지 next 를 타고 링크드 리스트를 순회한다.
 두 수의 합이 9보다 클 경우 넘어가는 숫자를 변수에 담아둔다.
 
-₩₩₩
+```
 while(i1 || i2 || carry) {
     auto n1 = i1 ? i1->val : 0;
     auto n2 = i2 ? i2->val : 0;
@@ -47,7 +47,7 @@ while(i1 || i2 || carry) {
     i2 = i2!=nullptr ? i2->next : nullptr;
     c = c->next;
 };
-₩₩₩
+```
 
 각 자리 수를 더했을 때 10으로 나누어 남는 수를 값으로 저장하고
 10으로 나눈 몫은 넘어가는 수로 저장한다.
