@@ -33,10 +33,31 @@ C++에서는 bool에 대한 reference를 사용할 수 없음.
 ## auto를 반환하는 함수
 ```
 template<typename Container, typename Index>
-auto autoAndAccess(Container& c, Index i)
+auto authAndAccess(Container& c, Index i)
   -> decltype(c[i])
 {
   authenticateUser();
   return c[i];
 }
 ```
+C++11 후행 반환 형식은 반환 형식을 매개 변수를 이용해 지정할 수 있다는 장점이 있음.
+  
+```
+template<typename Container, typename Index>
+auto authAndAccess(Container& c, Index i)
+{
+  authenticateUser();
+  return c[i];
+}
+```
+  
+
+C++14에서는 후행 반환 형식을 생략할 수 있음
+operator[] 는 T&를 반환하기 때문에 아래와 같은 코드를 구현할 때,
+```
+deque<int> d;
+authAndAccess(d, 5) = 10;
+```
+
+위 코드처럼 수정할 때 컴파일 되지 않음
+이유는 auto 반환 형식 연역 과정에서 참조가 제거되
