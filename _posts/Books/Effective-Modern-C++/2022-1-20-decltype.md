@@ -50,7 +50,6 @@ auto authAndAccess(Container& c, Index i)
   return c[i];
 }
 ```
-  
 
 C++14에서는 후행 반환 형식을 생략할 수 있음
 operator[] 는 T&를 반환하기 때문에 아래와 같은 코드를 구현할 때,
@@ -60,4 +59,27 @@ authAndAccess(d, 5) = 10;
 ```
 
 위 코드처럼 수정할 때 컴파일 되지 않음
-이유는 auto 반환 형식 연역 과정에서 참조가 제거되
+이유는 auto 반환 형식 연역 과정에서 참조가 제거되기 때문
+위 코드를 동작하게 수정하려면 authAndAccess가 c[i]의 반환 형식과 동일한 형식을 반환하게 함.
+
+```
+template<typename Container, typename Index>
+decltype(auto) autoAndAccess(Container&& c, Index i)
+{
+  authenticateUser();
+  return std::forward<Container>(c)[i];
+}
+```
+
+Container를 보편참조로 받으면 왼 값, 오른 값모두 인자로 입력할 수 있다.
+이상 C++14 버전, 아래는 C++11 코드
+
+```
+template<typename Container, typename Index>
+auto autoAndAccess(Container&& c, Index i)
+-> decltype(std::forward<Container>(c)[i])
+{
+  authenticateUser();
+  return std::forward<Container>(c)[i];
+}
+```
