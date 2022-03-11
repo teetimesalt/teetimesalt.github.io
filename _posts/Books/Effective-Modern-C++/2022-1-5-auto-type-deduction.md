@@ -13,7 +13,7 @@ tags:
 * case2 : 형식 지정자가 보편 참조인 경우, expression이 왼값(lvalue)이면 왼값 참조로 연역된다
 * case3 : 형식 지정자가 포인터도 아니고 참조도 아닌 경우. expression의 const와 참조가 무시된다
 
-```
+```c++
 auto x = 27; //int x (case 3)
 const auto cx = x; //const int cx(case 3)
 const auto& rx = x; //const int& rx (case 1)
@@ -26,7 +26,7 @@ auto&& uref3 = 27; //int&& uref3
 ## 템플릿과 auto 형식 연역의 차이점
 변수의 초기화를 지원하는 방법이 다양해지면서 다음과 같은 문제가 생김
 
-```
+```c++
 int x1 = 27;
 int x2(x1);
 int x3 = {27};

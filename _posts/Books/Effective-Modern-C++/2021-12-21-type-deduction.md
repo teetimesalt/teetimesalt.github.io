@@ -11,7 +11,7 @@ tags:
 Type deduction 에서는 형식 연역이라는 단어를 사용한다. 개인적으로 좀 더 자주 본 단어는 타입 추론이다.
 
 ### 템플릿 형식 연역
-```
+```c++
 template<typename T>
 void f(ParamType param);
 ...
@@ -20,7 +20,7 @@ f(expr)
 일 때, 세 가지 형식 연역 규칙이 존재함
 
 아래와 같은 변수 선언이 존재한다
-```
+```c++
 int x = 10;
 const int y = x;
 const int& z = x;
