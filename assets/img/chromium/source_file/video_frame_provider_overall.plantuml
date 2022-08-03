@@ -1,0 +1,6 @@
+@startuml
+component VideoFrameSubmitter <<VideoFrameProvider::Client>>
+component VideoFrameCompositor <<VideoFrameProvider>>
+
+VideoFrameSubmitter -- VideoFrameCompositor
+@enduml

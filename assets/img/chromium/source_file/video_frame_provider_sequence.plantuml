@@ -1,0 +1,91 @@
+@startuml
+box "cc" #LightBlue
+participant VideoLayerImpl
+participant VideoFrameProviderClientImpl
+participant VideoFrameCompositor
+end box
+
+box "media" #LightYellow
+participant VideoFrame
+participant VideoResourceUpdater
+participant MediaPlayback
+end box
+
+box "blink" #Coral
+participant VideoFrameSubmitter
+participant VideoFrameResourceProvider
+end box
+
+box "mojo" #Azure
+participant CompositorFrameSinkClient
+end box
+
+VideoLayerImpl -> VideoFrameProviderClientImpl : Create
+VideoFrameProviderClientImpl -> VideoFrameCompositor : SetVideoFrameProviderClient(this)
+
+CompositorFrameSinkClient -> VideoFrameSubmitter : OnBeginFrame
+activate VideoFrameSubmitter
+VideoFrameSubmitter -> VideoFrameCompositor : UpdateCurrentFrame
+activate VideoFrameCompositor
+VideoFrameCompositor -> VideoRendererImpl : Render
+VideoFrameCompositor -> VideoFrameCompositor : ProcessNewFrame
+deactivate VideoFrameCompositor
+
+VideoFrameSubmitter -> VideoFrameCompositor : GetCurrentFrame
+activate VideoFrameCompositor
+VideoFrameCompositor --> VideoFrameSubmitter : VideoFrame
+deactivate VideoFrameCompositor
+
+VideoFrameSubmitter -> VideoFrameSubmitter : SubmitFrame
+VideoFrameSubmitter -> VideoFrameSubmitter : CreateCompositorFrame
+VideoFrameSubmitter -> VideoFrameResourceProvider : AppendQuads
+
+deactivate VideoFrameSubmitter
+
+Unknown -> ExternalBeginFrameSource : OnBeginFrame
+activate ExternalBeginFrameSource
+
+ExternalBeginFrameSource -> BeginFrameObserverBase : OnBeginFrame
+activate BeginFrameObserverBase
+
+BeginFrameObserverBase -> Scheduler : BeginImplFrame
+activate Scheduler
+
+
+deactivate Scheduler
+deactivate BeginFrameObserverBase
+deactivate ExternalBeginFrameSource
+
+
+Tree -> VideoLayerImpl : WillDraw
+activate VideoLayerImpl
+VideoLayerImpl -> VideoFrameProviderClientImpl : AcquireLockAndCurrentFrame
+activate VideoFrameProviderClientImpl
+VideoFrameProviderClientImpl -> VideoFrameCompositor : GetCurrentFrame
+activate VideoFrameCompositor
+return VideoFrame
+return VideoFrame
+VideoLayerImpl -> VideoResourceUpdater : ObtainFrameResources
+deactivate VideoLayerImpl
+
+MediaPlayback -> VideoFrameCompositor : Callback
+VideoFrameCompositor -> VideoFrameProviderClientImpl : DidReceiveFrame
+VideoFrameProviderClientImpl -> VideoLayerImpl : SetNeedsRedraw
+
+Tree -> VideoFrameProviderClientImpl : DidDrawFrame
+VideoFrameProviderClientImpl -> VideoFrameCompositor : PutCurrentFrame
+
+User -> VideoFrameProviderClientImpl : OnBeginFrame
+activate VideoFrameProviderClientImpl
+VideoFrameProviderClientImpl -> VideoFrameCompositor : UpdateCurrentFrame
+activate VideoFrameCompositor
+VideoFrameCompositor -> VideoFrameCompositor : CallRender
+activate VideoFrameCompositor
+VideoFrameCompositor -> VideoRendererImpl : Render
+VideoFrameCompositor -> VideoFrameCompositor : ProcessNewFrame
+deactivate VideoFrameCompositor
+deactivate VideoFrameCompositor
+deactivate VideoFrameProviderClientImpl
+
+
+@enduml
